@@ -1,10 +1,12 @@
 package br.gama.itau.projetofinal2.service;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.gama.itau.projetofinal2.exception.NotFoundException;
+import br.gama.itau.projetofinal2.model.Conta;
 import br.gama.itau.projetofinal2.model.Movimentacao;
 import br.gama.itau.projetofinal2.repositorio.MovimentacaoRepo;
 
@@ -29,8 +31,16 @@ public class MovimentacaoService {
     // todas as movimentações de uma determinada conta
     // ===== Fazer com que retorne uma lista de movimentações através do número da
     // conta (numeroConta) =====
-    public Optional<Movimentacao> recuperarTodas(Integer id) {
-        return movimentacaoRepo.findById(id);
+    public List<Movimentacao> recuperarTodas(int id){
+        Conta conta = new Conta();
+        conta.setNumeroConta(id);
+        List<Movimentacao> listaMov = movimentacaoRepo.findByConta(conta);
+
+        if (listaMov.isEmpty()) {
+            throw new NotFoundException("movimentaçao não existe");
+        }
+        
+        return listaMov;
     }
 
 }

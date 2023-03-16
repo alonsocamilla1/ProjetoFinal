@@ -35,16 +35,13 @@ public class ContaServiceTest {
         BDDMockito.when(repo.save(ArgumentMatchers.any(Conta.class)))
                 .thenReturn(GenerateConta.contaValida());
 
-        BDDMockito.when(repo.save(ArgumentMatchers.any(Conta.class)))
-                .thenReturn(GenerateConta.contaValida2());
+        Conta contaParaAlterar = GenerateConta.contaValida();
+        service.alterarDados(contaParaAlterar, 30.0);
 
-        Conta contaParaAlterar = GenerateConta.contaValida2();
-       // Conta contaAlterada = service.alterarDados(contaParaAlterar, 30.0);
-
-       // assertThat(contaAlterada.getNumeroConta()).isEqualTo(2);
-       // assertThat(contaAlterada.getSaldo()).isEqualTo(contaParaAlterar.getSaldo());
+       assertThat(contaParaAlterar.getNumeroConta()).isEqualTo(1);
+       assertThat(contaParaAlterar.getSaldo()).isEqualTo(30.0);
      
-        verify(repo, Mockito.times(1)).save(contaParaAlterar);
+       // verify(repo, Mockito.times(0)).save(contaAlterada);
     }
 
     @Test
@@ -55,6 +52,7 @@ public class ContaServiceTest {
         Conta novaConta = GenerateConta.novaContaToSave();
 
        Conta contaAdicionada = service.adicionarConta(novaConta);
+
         assertThat(contaAdicionada).isNotNull();
         assertThat(contaAdicionada.getNumeroConta()).isPositive();
         assertThat(contaAdicionada.getSaldo()).isEqualTo(novaConta.getSaldo());

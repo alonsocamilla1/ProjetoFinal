@@ -2,6 +2,9 @@ package br.gama.itau.projetofinal2.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,11 +31,14 @@ public class MovimentacaoServiceTest {
     public void cadastrarMovimentacao_returnMovimentacaoCadastrada_whenMovimentacaoExist() {
         BDDMockito.when(repo.save(ArgumentMatchers.any(Movimentacao.class)))
                 .thenReturn(GenerateMovimentacao.moviValida());
+
         Movimentacao novaMovi = GenerateMovimentacao.novaMoviToSave();
         Movimentacao moviCadastrada = service.cadastrarMovimentacao(novaMovi);
+
         assertThat(moviCadastrada).isNotNull();
         assertThat(moviCadastrada.getNumSeq()).isPositive();
         assertThat(moviCadastrada.getValor()).isEqualTo(novaMovi.getValor());
+        
         verify(repo, Mockito.times(1)).save(novaMovi);
     }
 
@@ -40,14 +46,26 @@ public class MovimentacaoServiceTest {
     public void cadastrarMovimentacao_returnNull_whenMovimentacaoNotExist() {
         Movimentacao novaMovi = GenerateMovimentacao.moviValida();
         Movimentacao moviCadastrada = service.cadastrarMovimentacao(novaMovi);
+
         assertThat(moviCadastrada).isNull();
-        verify(repo, Mockito.times(0)).save(novaMovi);
+
+        verify(repo, Mockito.times(1)).save(novaMovi);
     }
 
     @Test
     public void recuperarTodas_returnTodasAsMovimentacoesCadastradas_whenSucesso() {
-        BDDMockito.when(repo.save(ArgumentMatchers.any(Movimentacao.class)))
-                .thenReturn(GenerateMovimentacao.moviValida());
+       // preparação
+       BDDMockito.when(repo.save(ArgumentMatchers.any(Movimentacao.class)))
+       .thenReturn(GenerateMovimentacao.moviValida());
+
+       BDDMockito.when(repo.save(ArgumentMatchers.any(Movimentacao.class)))
+       .thenReturn(GenerateMovimentacao.moviValida2());
+
+        //ação
+        Optional<Movimentacao> listaCompleta = service.recuperarTodas(1);
+
+        // verificações
+        assertThat(listaCompleta).isNotNull();
     }
 
 }

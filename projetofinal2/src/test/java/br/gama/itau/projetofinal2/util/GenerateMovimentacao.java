@@ -21,6 +21,22 @@ public class GenerateMovimentacao {
             .valor(1.0)
             .tipoOperacao(1)
             .build();
-    
-}
+    }
+
+    public static Movimentacao novaMoviToSave2() {
+        return Movimentacao.builder()
+            .dataOperacao(LocalDate.now())
+            .valor(2.0)
+            .tipoOperacao(2)
+            .build();
+    }
+
+    public static Movimentacao moviValida2() {
+        return Movimentacao.builder()
+            .numSeq(2)
+            .dataOperacao(LocalDate.now())
+            .valor(2.0)
+            .tipoOperacao(2)
+            .build();
+    }
 }

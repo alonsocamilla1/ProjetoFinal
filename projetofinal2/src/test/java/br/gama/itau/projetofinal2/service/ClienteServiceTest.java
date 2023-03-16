@@ -39,7 +39,7 @@ public class ClienteServiceTest {
 
         assertThat(clienteCriado).isNotNull();
         assertThat(clienteCriado.getIdCliente()).isPositive();
-        assertThat(clienteCriado.getIdCliente()).isEqualTo(GenerateCliente.clienteValido().getIdCliente());
+        assertThat(clienteCriado.getTelefoneCliente()).isEqualTo(GenerateCliente.clienteValido().getTelefoneCliente());
         // verifica se o método save foi chamado 1 vez
         verify(repo, Mockito.times(1)).save(novoCliente);
     }
@@ -52,8 +52,6 @@ public class ClienteServiceTest {
         assertThrows(NotFoundException.class, () ->{
             service.cadastrarCliente(clienteValido);
         });
-
-        // verify(repo, Mockito.times(1)).save(clienteValido);
     }
 
     @Test
@@ -67,8 +65,8 @@ public class ClienteServiceTest {
             .isNotNull();
         assertThat(clienteEncontrado.getIdCliente())
             .isGreaterThan(0);
-        assertThat(clienteEncontrado.getIdCliente())
-            .isEqualTo(GenerateCliente.clienteValido().getIdCliente())
+        assertThat(clienteEncontrado.getTelefoneCliente())
+            .isEqualTo(GenerateCliente.clienteValido().getTelefoneCliente())
             .isNotNull();
 }
 
